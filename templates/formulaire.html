@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Recensement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            @apply w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+        }
+        label {
+            @apply block text-gray-700 text-sm font-medium mb-1;
+        }
+        .form-section {
+            @apply bg-white p-6 rounded-lg shadow-md mb-6;
+        }
+        .form-section-title {
+            @apply text-2xl font-semibold text-gray-800 mb-4 border-b pb-2;
+        }
+        .radio-group, .checkbox-group {
+            @apply flex flex-wrap gap-4;
+        }
+        .radio-item, .checkbox-item {
+            @apply flex items-center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-center text-gray-900 mb-8">Formulaire de Recensement</h1>
+        <p class="text-center text-gray-600 mb-8">Veuillez remplir toutes les sections avec les informations les plus précises possibles.</p>
+        <form action="/submit_form" method="POST" class="space-y-6">
+            <!-- I. Informations Démographiques de Base -->
+            <div class="form-section">
+                <h2 class="form-section-title">I. Informations Démographiques de Base</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="household_id">Identifiant Unique du Ménage/Logement</label>
+                        <input type="text" id="household_id" name="household_id" value="AUTO-GÉNÉRÉ" readonly class="bg-gray-100 cursor-not-allowed">
+                        <p class="text-xs text-gray-500 mt-1">Cet identifiant est généré par le système.</p>
+                    </div>
+                    <div>
+                        <label for="individual_sequence">Numéro de Séquence de l'Individu dans le Ménage</label>
+                        <input type="number" id="individual_sequence" name="individual_sequence" min="1" required>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="last_name">Nom de famille</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                    <div>
+                        <label for="first_name">Prénom(s)</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label>Sexe</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="sex_male" name="sex" value="Masculin" class="mr-2">
+                            <label for="sex_male">Masculin</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="sex_female" name="sex" value="Féminin" class="mr-2">
+                            <label for="sex_female">Féminin</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="sex_other" name="sex" value="Autre" class="mr-2">
+                            <label for="sex_other">Autre</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="sex_prefer_not_say" name="sex" value="Ne pas divulguer" class="mr-2">
+                            <label for="sex_prefer_not_say">Préfère ne pas divulguer</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="dob">Date de Naissance</label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+                    <div>
+                        <label for="age">Âge</label>
+                        <input type="number" id="age" name="age" min="0" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label>Lieu de Naissance</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="birth_country" class="sr-only">Pays</label>
+                            <input type="text" id="birth_country" name="birth_country" placeholder="Pays" required>
+                        </div>
+                        <div>
+                            <label for="birth_region" class="sr-only">Région/Province/État</label>
+                            <input type="text" id="birth_region" name="birth_region" placeholder="Région/Province/État" required>
+                        </div>
+                        <div>
+                            <label for="birth_city" class="sr-only">Ville/Commune</label>
+                            <input type="text" id="birth_city" name="birth_city" placeholder="Ville/Commune" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="nationality">Nationalité(s)</label>
+                    <input type="text" id="nationality" name="nationality" placeholder="Ex: Française, Congolaise, Double nationalité" required>
+                </div>
+                <div class="mb-4">
+                    <label for="marital_status">Statut Matrimonial</label>
+                    <select id="marital_status" name="marital_status" required>
+                        <option value="">Sélectionnez...</option>
+                        <option value="Célibataire">Célibataire</option>
+                        <option value="Marié(e) / Uni(e) civilement">Marié(e) / Uni(e) civilement</option>
+                        <option value="Divorcé(e) / Séparé(e)">Divorcé(e) / Séparé(e)</option>
+                        <option value="Veuf(ve)">Veuf(ve)</option>
+                        <option value="En concubinage / Union libre">En concubinage / Union libre</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="relationship_to_head">Lien de Parenté avec le Chef de Ménage</label>
+                    <select id="relationship_to_head" name="relationship_to_head" required>
+                        <option value="">Sélectionnez...</option>
+                        <option value="Chef de ménage">Chef de ménage</option>
+                        <option value="Conjoint(e)">Conjoint(e)</option>
+                        <option value="Enfant">Enfant</option>
+                        <option value="Parent">Parent</option>
+                        <option value="Autre membre de la famille">Autre membre de la famille</option>
+                        <option value="Non apparenté">Non apparenté</option>
+                    </select>
+                </div>
+            </div>
+            <!-- II. Informations sur le Logement et la Localisation -->
+            <div class="form-section">
+                <h2 class="form-section-title">II. Informations sur le Logement et la Localisation</h2>
+                <div class="mb-4">
+                    <label>Adresse Complète</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="address_street_number" class="sr-only">Numéro de rue et nom de la rue</label>
+                            <input type="text" id="address_street_number" name="address_street_number" placeholder="Numéro et nom de la rue" required>
+                        </div>
+                        <div>
+                            <label for="address_quarter" class="sr-only">Quartier/Localité</label>
+                            <input type="text" id="address_quarter" name="address_quarter" placeholder="Quartier/Localité" required>
+                        </div>
+                        <div>
+                            <label for="address_city" class="sr-only">Ville/Commune</label>
+                            <input type="text" id="address_city" name="address_city" placeholder="Ville/Commune" required>
+                        </div>
+                        <div>
+                            <label for="address_region" class="sr-only">Région/Province/État</label>
+                            <input type="text" id="address_region" name="address_region" placeholder="Région/Province/État" required>
+                        </div>
+                        <div>
+                            <label for="address_country" class="sr-only">Pays</label>
+                            <input type="text" id="address_country" name="address_country" placeholder="Pays" required>
+                        </div>
+                        <div>
+                            <label for="address_postal_code" class="sr-only">Code Postal (si applicable)</label>
+                            <input type="text" id="address_postal_code" name="address_postal_code" placeholder="Code Postal (si applicable)">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label>Type de Logement</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="housing_type_house" name="housing_type" value="Maison individuelle" class="mr-2">
+                            <label for="housing_type_house">Maison individuelle</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="housing_type_apartment" name="housing_type" value="Appartement" class="mr-2">
+                            <label for="housing_type_apartment">Appartement</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="housing_type_collective" name="housing_type" value="Logement collectif" class="mr-2">
+                            <label for="housing_type_collective">Logement collectif</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="housing_type_makeshift" name="housing_type" value="Logement de fortune" class="mr-2">
+                            <label for="housing_type_makeshift">Logement de fortune</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="housing_type_other" name="housing_type" value="Autre" class="mr-2">
+                            <label for="housing_type_other">Autre</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label>Statut d'Occupation du Logement</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="occupancy_owner" name="occupancy_status" value="Propriétaire" class="mr-2">
+                            <label for="occupancy_owner">Propriétaire</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="occupancy_tenant" name="occupancy_status" value="Locataire" class="mr-2">
+                            <label for="occupancy_tenant">Locataire</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="occupancy_free" name="occupancy_status" value="Occupant à titre gratuit" class="mr-2">
+                            <label for="occupancy_free">Occupant à titre gratuit</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="occupancy_other" name="occupancy_status" value="Autre" class="mr-2">
+                            <label for="occupancy_other">Autre</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="num_rooms">Nombre de Pièces du Logement</label>
+                    <input type="number" id="num_rooms" name="num_rooms" min="1" required>
+                </div>
+                <div class="mb-4">
+                    <label>Accès aux Services de Base</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="water_source">Source d'eau potable</label>
+                            <input type="text" id="water_source" name="water_source" placeholder="Ex: Eau courante, Puits, Forage" required>
+                        </div>
+                        <div>
+                            <label for="toilet_type">Type de toilettes</label>
+                            <input type="text" id="toilet_type" name="toilet_type" placeholder="Ex: Chasse d'eau, Latrines" required>
+                        </div>
+                        <div>
+                            <label for="lighting_energy">Source d'énergie pour l'éclairage</label>
+                            <input type="text" id="lighting_energy" name="lighting_energy" placeholder="Ex: Électricité, Pétrole, Solaire" required>
+                        </div>
+                        <div>
+                            <label for="cooking_energy">Source d'énergie pour la cuisine</label>
+                            <input type="text" id="cooking_energy" name="cooking_energy" placeholder="Ex: Gaz, Bois, Électricité, Charbon" required>
+                        </div>
+                        <div>
+                            <label for="waste_disposal">Évacuation des déchets</label>
+                            <input type="text" id="waste_disposal" name="waste_disposal" placeholder="Ex: Collecte publique, Incinération" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- III. Informations sur l'Éducation -->
+            <div class="form-section">
+                <h2 class="form-section-title">III. Informations sur l'Éducation</h2>
+                <div class="mb-4">
+                    <label for="education_level">Niveau d'Instruction le Plus Élevé Atteint</label>
+                    <select id="education_level" name="education_level" required>
+                        <option value="">Sélectionnez...</option>
+                        <option value="Aucun">Aucun</option>
+                        <option value="Préscolaire">Préscolaire</option>
+                        <option value="Primaire">Primaire</option>
+                        <option value="Secondaire">Secondaire</option>
+                        <option value="Supérieur (Licence)">Supérieur (Licence)</option>
+                        <option value="Supérieur (Master)">Supérieur (Master)</option>
+                        <option value="Supérieur (Doctorat)">Supérieur (Doctorat)</option>
+                        <option value="Autre Supérieur">Autre Supérieur</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label>Statut de Scolarisation Actuel</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="school_status_current" name="school_status" value="Actuellement scolarisé(e)" class="mr-2">
+                            <label for="school_status_current">Actuellement scolarisé(e)</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="school_status_never" name="school_status" value="Jamais scolarisé(e)" class="mr-2">
+                            <label for="school_status_never">Jamais scolarisé(e)</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="school_status_former" name="school_status" value="Anciennement scolarisé(e)" class="mr-2">
+                            <label for="school_status_former">Anciennement scolarisé(e)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label>Type d'Établissement Fréquenté (si scolarisé)</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="school_type_public" name="school_type" value="Public" class="mr-2">
+                            <label for="school_type_public">Public</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="school_type_private" name="school_type" value="Privé" class="mr-2">
+                            <label for="school_type_private">Privé</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- IV. Informations sur l'Activité Économique et l'Emploi -->
+            <div class="form-section">
+                <h2 class="form-section-title">IV. Informations sur l'Activité Économique et l'Emploi</h2>
+                <div class="mb-4">
+                    <label for="activity_status">Statut d'Activité</label>
+                    <select id="activity_status" name="activity_status" required>
+                        <option value="">Sélectionnez...</option>
+                        <option value="Employé(e)">Employé(e)</option>
+                        <option value="Chômeur(se)">Chômeur(se) (en recherche d'emploi)</option>
+                        <option value="Étudiant(e)">Étudiant(e)</option>
+                        <option value="Retraité(e)">Retraité(e)</option>
+                        <option value="Femme/Homme au foyer">Femme/Homme au foyer</option>
+                        <option value="Incapable de travailler">Incapable de travailler</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="main_profession">Profession Principale</label>
+                    <input type="text" id="main_profession" name="main_profession" placeholder="Description du métier" required>
+                </div>
+                <div class="mb-4">
+                    <label for="economic_sector">Secteur d'Activité</label>
+                    <input type="text" id="economic_sector" name="economic_sector" placeholder="Ex: Agriculture, Industrie, Services, Commerce" required>
+                </div>
+                <div class="mb-4">
+                    <label for="employment_status">Statut dans l'Emploi</label>
+                    <select id="employment_status" name="employment_status" required>
+                        <option value="">Sélectionnez...</option>
+                        <option value="Salarié(e)">Salarié(e)</option>
+                        <option value="Travailleur(se) indépendant(e)">Travailleur(se) indépendant(e)</option>
+                        <option value="Employeur">Employeur</option>
+                        <option value="Aide familial(e) non rémunéré(e)">Aide familial(e) non rémunéré(e)</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="workplace">Lieu de Travail</label>
+                    <input type="text" id="workplace" name="workplace" placeholder="Adresse ou type de lieu (Ex: à domicile, bureau)" required>
+                </div>
+            </div>
+            <!-- V. Informations sur la Migration -->
+            <div class="form-section">
+                <h2 class="form-section-title">V. Informations sur la Migration</h2>
+                <div class="mb-4">
+                    <label>Statut de Résidence</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="residence_status_habitual" name="residence_status" value="Résident habituel" class="mr-2">
+                            <label for="residence_status_habitual">Résident habituel</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="residence_status_visitor" name="residence_status" value="Visiteur / Non-résident" class="mr-2">
+                            <label for="residence_status_visitor">Visiteur / Non-résident</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="residence_duration">Durée de Résidence dans la Localité Actuelle (en années)</label>
+                    <input type="number" id="residence_duration" name="residence_duration" min="0" required>
+                </div>
+                <div class="mb-4">
+                    <label>Lieu de Résidence Précédent (si différent)</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="prev_residence_country" class="sr-only">Pays</label>
+                            <input type="text" id="prev_residence_country" name="prev_residence_country" placeholder="Pays">
+                        </div>
+                        <div>
+                            <label for="prev_residence_region" class="sr-only">Région/Province/État</label>
+                            <input type="text" id="prev_residence_region" name="prev_residence_region" placeholder="Région/Province/État">
+                        </div>
+                        <div>
+                            <label for="prev_residence_city" class="sr-only">Ville/Commune</label>
+                            <input type="text" id="prev_residence_city" name="prev_residence_city" placeholder="Ville/Commune">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="reason_for_move">Raison du Déménagement</label>
+                    <input type="text" id="reason_for_move" name="reason_for_move" placeholder="Ex: Emploi, Études, Famille, Conflit, etc.">
+                </div>
+            </div>
+            <!-- VI. Santé et Handicap (Optionnel) -->
+            <div class="form-section">
+                <h2 class="form-section-title">VI. Santé et Handicap (Optionnel)</h2>
+                <div class="mb-4">
+                    <label for="health_status">État de Santé Général (auto-déclaré)</label>
+                    <select id="health_status" name="health_status">
+                        <option value="">Sélectionnez...</option>
+                        <option value="Très bon">Très bon</option>
+                        <option value="Bon">Bon</option>
+                        <option value="Moyen">Moyen</option>
+                        <option value="Mauvais">Mauvais</option>
+                        <option value="Très mauvais">Très mauvais</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label>Présence de Difficultés ou Handicaps</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-4">
+                            <input type="checkbox" id="difficulty_vision" name="difficulty_vision" class="mr-2">
+                            <label for="difficulty_vision" class="flex-1">Vision</label>
+                            <select id="difficulty_vision_level" name="difficulty_vision_level" class="w-1/2">
+                                <option value="">Niveau de difficulté</option>
+                                <option value="Aucune">Aucune</option>
+                                <option value="Légère">Légère</option>
+                                <option value="Modérée">Modérée</option>
+                                <option value="Sévère">Sévère</option>
+                                <option value="Incapable">Incapable</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <input type="checkbox" id="difficulty_hearing" name="difficulty_hearing" class="mr-2">
+                            <label for="difficulty_hearing" class="flex-1">Audition</label>
+                            <select id="difficulty_hearing_level" name="difficulty_hearing_level" class="w-1/2">
+                                <option value="">Niveau de difficulté</option>
+                                <option value="Aucune">Aucune</option>
+                                <option value="Légère">Légère</option>
+                                <option value="Modérée">Modérée</option>
+                                <option value="Sévère">Sévère</option>
+                                <option value="Incapable">Incapable</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <input type="checkbox" id="difficulty_mobility" name="difficulty_mobility" class="mr-2">
+                            <label for="difficulty_mobility" class="flex-1">Mobilité</label>
+                            <select id="difficulty_mobility_level" name="difficulty_mobility_level" class="w-1/2">
+                                <option value="">Niveau de difficulté</option>
+                                <option value="Aucune">Aucune</option>
+                                <option value="Légère">Légère</option>
+                                <option value="Modérée">Modérée</option>
+                                <option value="Sévère">Sévère</option>
+                                <option value="Incapable">Incapable</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <input type="checkbox" id="difficulty_cognition" name="difficulty_cognition" class="mr-2">
+                            <label for="difficulty_cognition" class="flex-1">Cognition</label>
+                            <select id="difficulty_cognition_level" name="difficulty_cognition_level" class="w-1/2">
+                                <option value="">Niveau de difficulté</option>
+                                <option value="Aucune">Aucune</option>
+                                <option value="Légère">Légère</option>
+                                <option value="Modérée">Modérée</option>
+                                <option value="Sévère">Sévère</option>
+                                <option value="Incapable">Incapable</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <input type="checkbox" id="difficulty_selfcare" name="difficulty_selfcare" class="mr-2">
+                            <label for="difficulty_selfcare" class="flex-1">Auto-soins</label>
+                            <select id="difficulty_selfcare_level" name="difficulty_selfcare_level" class="w-1/2">
+                                <option value="">Niveau de difficulté</option>
+                                <option value="Aucune">Aucune</option>
+                                <option value="Légère">Légère</option>
+                                <option value="Modérée">Modérée</option>
+                                <option value="Sévère">Sévère</option>
+                                <option value="Incapable">Incapable</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <input type="checkbox" id="difficulty_communication" name="difficulty_communication" class="mr-2">
+                            <label for="difficulty_communication" class="flex-1">Communication</label>
+                            <select id="difficulty_communication_level" name="difficulty_communication_level" class="w-1/2">
+                                <option value="">Niveau de difficulté</option>
+                                <option value="Aucune">Aucune</option>
+                                <option value="Légère">Légère</option>
+                                <option value="Modérée">Modérée</option>
+                                <option value="Sévère">Sévère</option>
+                                <option value="Incapable">Incapable</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="healthcare_access">Accès aux Soins de Santé</label>
+                    <input type="text" id="healthcare_access" name="healthcare_access" placeholder="Ex: Assurance maladie, Distance aux centres de santé">
+                </div>
+            </div>
+            <!-- VII. Autres Informations Potentielles (Optionnel) -->
+            <div class="form-section">
+                <h2 class="form-section-title">VII. Autres Informations Potentielles (Optionnel)</h2>
+                <div class="mb-4">
+                    <label for="ethnic_origin">Origine Ethnique / Groupe Social</label>
+                    <input type="text" id="ethnic_origin" name="ethnic_origin" placeholder="À utiliser avec prudence et justification légale">
+                </div>
+                <div class="mb-4">
+                    <label for="religion">Religion</label>
+                    <input type="text" id="religion" name="religion" placeholder="À utiliser avec prudence et justification légale">
+                </div>
+                <div class="mb-4">
+                    <label for="spoken_languages">Langue(s) Parlée(s) à la Maison</label>
+                    <input type="text" id="spoken_languages" name="spoken_languages" placeholder="Ex: Français, Lingala, Swahili">
+                </div>
+                <div class="mb-4">
+                    <label for="num_mobile_phones">Nombre de Téléphones Portables dans le Ménage</label>
+                    <input type="number" id="num_mobile_phones" name="num_mobile_phones" min="0">
+                </div>
+                <div class="mb-4">
+                    <label>Accès à Internet</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="internet_home" name="internet_access" value="À domicile" class="mr-2">
+                            <label for="internet_home">À domicile</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="internet_mobile" name="internet_access" value="Via mobile" class="mr-2">
+                            <label for="internet_mobile">Via mobile</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="internet_public" name="internet_access" value="Dans un lieu public" class="mr-2">
+                            <label for="internet_public">Dans un lieu public</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="internet_none" name="internet_access" value="Aucun" class="mr-2">
+                            <label for="internet_none">Aucun</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center py-6">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    Soumettre le Recensement
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
